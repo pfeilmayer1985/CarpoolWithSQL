@@ -7,7 +7,6 @@ namespace TecAlliance.Carpool.Data
 {
     public class CarpoolsDataServiceSQL : ICarpoolsDataServiceSQL
     {
-
         string connectionString = @"Data Source=localhost;Initial Catalog=CarpoolDB;Integrated Security=True; TrustServerCertificate=True;";
 
         /// <summary>
@@ -27,7 +26,7 @@ namespace TecAlliance.Carpool.Data
                 {
                     while (reader.Read())
                     {
-                        carpools.Add(new CarpoolsModelData((int)reader["CarpoolID"], (int)reader["DriverID"], (int)reader["FreeSeats"], reader["Origin"].ToString(), reader["Destination"].ToString(), (DateTime)reader["DepartureDate"]));
+                        carpools.Add(new CarpoolsModelData((int)reader["CarpoolID"], (int)reader["DriverID"], (int)reader["TotalSeatsCount"], reader["Origin"].ToString(), reader["Destination"].ToString(), (DateTime)reader["DepartureDate"]));
                     }
 
                 }
@@ -39,12 +38,10 @@ namespace TecAlliance.Carpool.Data
             return carpools;
         }
 
-
-
         /// <summary>
         /// This method lists one selected carpool from the Database based on CarpoolID
         /// </summary>
-        public CarpoolsModelData ListCarpoolByIDDataService(int id)
+        public CarpoolsModelData ListCarpoolByIDDataService(int carpoolID)
         {
 
             var carpools = new CarpoolsModelData();
@@ -53,7 +50,7 @@ namespace TecAlliance.Carpool.Data
                 string queryString = "SELECT * FROM Carpools WHERE CarpoolID = @CarpoolID";
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.Parameters.Add("@CarpoolID", SqlDbType.VarChar);
-                command.Parameters["@CarpoolID"].Value = id;
+                command.Parameters["@CarpoolID"].Value = carpoolID;
                 connection.Open();
                 SqlDataReader reader = command.ExecuteReader();
                 try
@@ -64,7 +61,7 @@ namespace TecAlliance.Carpool.Data
                         (
                             (int)reader["CarpoolID"],
                             (int)reader["DriverID"],
-                            (int)reader["FreeSeats"],
+                            (int)reader["TotalSeatsCount"],
                             reader["Origin"].ToString(),
                             reader["Destination"].ToString(),
                             (DateTime)reader["DepartureDate"]
@@ -84,27 +81,47 @@ namespace TecAlliance.Carpool.Data
         /// <summary>
         /// This method adds a new User to the Database
         /// </summary>
-        public void AddCarpoolWithDriverDataService(CarpoolsModelData carpool)
+        public void AddCarpoolDataService(CarpoolsModelData carpool)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string queryString = $"INSERT INTO Carpools(DriverID,FreeSeats,Origin,Destination,DepartureDate) VALUES('{carpool.DriverID}','{carpool.FreeSeatsRemaining}','{carpool.Origin}','{carpool.Destination}','{carpool.DepartureDate}')";
+                string queryString = $"INSERT INTO Carpools(DriverID,TotalSeatsCount,Origin,Destination,DepartureDate) VALUES('{carpool.DriverID}','{carpool.TotalSeatsCount}','{carpool.Origin}','{carpool.Destination}','{carpool.DepartureDate}')";
                 SqlCommand command = new SqlCommand(queryString, connection);
                 connection.Open();
                 command.ExecuteNonQuery();
             }
         }
 
-        public void AddCarpoolNODriverDataService(CarpoolsModelData carpool)
+        /// <summary>
+        /// This method counts the actual number of members in a Carpool
+        /// </summary>
+        public int CountPassengersDataService(int carpoolID)
         {
+            var carpools = new CarpoolsModelData();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string queryString = $"INSERT INTO Carpools(FreeSeats,Origin,Destination,DepartureDate) VALUES(4,'{carpool.Origin}','{carpool.Destination}','{carpool.DepartureDate}') Select Scope_Identity()";
+                string queryString = "SELECT COUNT(*) as OccupiedSeats FROM CarpoolPassengers WHERE CarpoolID = @CarpoolID;";
                 SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add("@CarpoolID", SqlDbType.VarChar);
+                command.Parameters["@CarpoolID"].Value = carpoolID;
                 connection.Open();
-                command.ExecuteNonQuery();
+                SqlDataReader reader = command.ExecuteReader();
+                int activePassengers = -1;
+                try
+                {
+                    while (reader.Read())
+                    {
+                        activePassengers = (int)reader["OccupiedSeats"];
+                        return activePassengers;
+                    }
+                }
+                finally
+                {
+                    reader.Close();
+                }
+                return activePassengers;
             }
-        }
 
+        }
     }
 }

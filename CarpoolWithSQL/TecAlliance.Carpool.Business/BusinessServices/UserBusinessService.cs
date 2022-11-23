@@ -12,6 +12,7 @@ namespace TecAlliance.Carpool.Business
         List<UserBaseModelData> userList;
         List<CarpoolsModelData> carpoolsList;
         List<CarpoolPassengersModelData> passengersList;
+        UserBaseModelData user;
 
         public UserBusinessService(IUsersDataServiceSQL userDataServiceSQL, ICarpoolsDataServiceSQL carpoolDataServiceSQL)
         {
@@ -75,27 +76,25 @@ namespace TecAlliance.Carpool.Business
 
         }
 
-
         /// <summary>
         /// This method will edit/replace the data of a user based on his ID
         /// </summary>
-        public UserBaseModelData EditUserBusinessService(int id, string password, UserBaseModelData user)
+        public UserBaseModelData EditUserBusinessService(int userID, string password, UserBaseModelData userM)
         {
-            userList = _userDataServiceSQL.ListAllUsersDataService();
+            user = _userDataServiceSQL.ListUserByIdDataService(userID);
 
-            var findUser = userList.FirstOrDefault(e => e.ID.Equals(id));
-
-            if (findUser != null && findUser.Password == password)
+            if (user != null && user.Password == password)
             {
 
                 UserBaseModelData editedUser = new UserBaseModelData()
                 {
-                    Email = user.Email.ToLower(),
-                    PhoneNo = user.PhoneNo,
-                    Password = user.Password,
-                    LastName = user.LastName,
-                    FirstName = user.FirstName,
-                    IsDriver = user.IsDriver
+                    ID = user.ID,
+                    Email = userM.Email.ToLower(),
+                    PhoneNo = userM.PhoneNo,
+                    Password = userM.Password,
+                    LastName = userM.LastName,
+                    FirstName = userM.FirstName,
+                    IsDriver = userM.IsDriver
                 };
                 _userDataServiceSQL.EditUserDataService(editedUser);
 
@@ -106,7 +105,6 @@ namespace TecAlliance.Carpool.Business
                 return null;
             }
         }
-
 
         /// <summary>
         /// This method will delete a user based on his ID
@@ -131,7 +129,6 @@ namespace TecAlliance.Carpool.Business
 
         }
 
-
         /// <summary>
         /// This method will add a new user in the Database
         /// </summary>
@@ -147,7 +144,6 @@ namespace TecAlliance.Carpool.Business
 
             return newPassenger;
         }
-
 
         /// <summary>
         /// This method will delete a passenger from a Carpool (ID) based on his UserID

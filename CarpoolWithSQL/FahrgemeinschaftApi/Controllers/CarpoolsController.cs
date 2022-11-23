@@ -20,21 +20,20 @@ namespace TecAlliance.Carpool.Api.Controllers
         }
 
         [HttpGet]
-
-        // [Route("api/CarPoolApi/GetCarpools")]
+        [Route("GetAllCarpools")]
         public async Task<ActionResult<IEnumerable<CarpoolsModelData>>> GetAllCarpools()
         {
             List<CarpoolsModelData> items = _carpoolsBusinessService.ListAllCarpoolsBusinessService();
             return items;
         }
-        
-        [HttpGet("{id}")]
+
+        [HttpGet]
+        [Route("GetCarpoolById{carpoolID}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        // [Route("api/CarPoolApi/GetCarpoolById/{id}")]
-        public async Task<ActionResult<CarpoolsModelDto>> GetCarpoolById(int id)
+        public async Task<ActionResult<CarpoolsModelDto>> GetCarpoolById(int carpoolID)
         {
-            CarpoolsModelDto carpool = _carpoolsBusinessService.ListOneCarpoolByIdBusinessService(id);
+            CarpoolsModelDto carpool = _carpoolsBusinessService.ListOneCarpoolByIdBusinessService(carpoolID);
             if (carpool == null)
             {
                 return NotFound();
@@ -46,11 +45,20 @@ namespace TecAlliance.Carpool.Api.Controllers
         }
 
         [HttpPost]
-        //[Route("api/CarPoolApi/AddCarpool")]
-        public async Task<ActionResult<CarpoolsModelData>> AddCarpool(int userID, bool wantToDrive, CarpoolsModelData carpool)
+        [Route("DriverCreatesCarpool{userID}")]
+        public async Task<ActionResult<CarpoolsModelData>> AddCarpool(int userID, CarpoolsModelData carpool)
         {
-            CarpoolsModelData newCarpool = _carpoolsBusinessService.AddCarpoolBusineeService(userID, wantToDrive, carpool);
+            CarpoolsModelData newCarpool = _carpoolsBusinessService.AddCarpoolBusineeService(userID, carpool);
             return newCarpool;
+        }
+
+        [HttpPost]
+        [Route("PassengerJoinsExistingCarpool{carpoolID},{userID}")]
+        public async Task<ActionResult<CarpoolPassengersModelData>> JoinCarpool(int carpoolID, int userID)
+        {
+            CarpoolPassengersModelData newPassengerToJoinCarpool = new CarpoolPassengersModelData(carpoolID, userID);
+            _carpoolsBusinessService.JoinExistingCarpoolBusineeService(newPassengerToJoinCarpool);
+            return newPassengerToJoinCarpool;
         }
 
         /*

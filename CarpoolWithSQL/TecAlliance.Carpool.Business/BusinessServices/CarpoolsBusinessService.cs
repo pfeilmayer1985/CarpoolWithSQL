@@ -11,7 +11,9 @@ namespace TecAlliance.Carpool.Business
         private ICarpoolsDataServiceSQL _carpoolsDataServiceSQL;
         private IUsersDataServiceSQL _usersDataServiceSQL;
         List<CarpoolsModelData> carpoolsList;
+        List<CarpoolPassengersModelData> passengerAllreadyInTheCarpool;
         UserBaseModelData user;
+        CarpoolsModelData carpool;
 
         public CarpoolsBusinessService(ICarpoolsDataServiceSQL carpoolDataServiceSQL, IUsersDataServiceSQL userDataServiceSQL)
         {
@@ -37,24 +39,24 @@ namespace TecAlliance.Carpool.Business
         /// <summary>
         /// This method will return one detailed carpool info based on a search after CarpoolID
         /// </summary>
-        public CarpoolsModelDto ListOneCarpoolByIdBusinessService(int id)
+        public CarpoolsModelDto ListOneCarpoolByIdBusinessService(int carpoolID)
         {
-            carpoolsList = _carpoolsDataServiceSQL.ListAllCarpoolsDataService();
-            user = _usersDataServiceSQL.ListUserByIdDataService(id);
+            carpool = _carpoolsDataServiceSQL.ListCarpoolByIDDataService(carpoolID);
+            user = _usersDataServiceSQL.ListUserByIdDataService(carpool.DriverID);
 
-            var findCarpool = carpoolsList.First(e => e.CarpoolID.Equals(id));
-            if (findCarpool != null)
+            //var findCarpool = carpoolsList.First(e => e.CarpoolID.Equals(carpoolID));
+            if (carpool != null)
             {
                 CarpoolsModelDto newCarpool = new CarpoolsModelDto
                 {
-                    CarpoolID = findCarpool.CarpoolID,
+                    CarpoolID = carpool.CarpoolID,
                     Driver = ConvertUserToDto(user),
-                    FreeSeatsRemaining = findCarpool.FreeSeatsRemaining,
-                    Origin = findCarpool.Origin,
-                    Destination = findCarpool.Destination,
-                    DepartureDate = findCarpool.DepartureDate
+                    TotalSeatsCount = carpool.TotalSeatsCount,
+                    Origin = carpool.Origin,
+                    Destination = carpool.Destination,
+                    DepartureDate = carpool.DepartureDate
                 };
-                _carpoolsDataServiceSQL.ListCarpoolByIDDataService(id);
+                _carpoolsDataServiceSQL.ListCarpoolByIDDataService(carpoolID);
                 return newCarpool;
             }
             else
@@ -71,7 +73,7 @@ namespace TecAlliance.Carpool.Business
         /// <summary>
         /// This method will add a new carpool in the Database
         /// </summary>
-        public CarpoolsModelData AddCarpoolBusineeService(int userID, bool designatedDriver, CarpoolsModelData carpool)
+        public CarpoolsModelData AddCarpoolBusineeService(int userID, CarpoolsModelData carpool)
         {
             user = _usersDataServiceSQL.ListUserByIdDataService(userID);
 
@@ -79,7 +81,7 @@ namespace TecAlliance.Carpool.Business
             {
                 CarpoolID = carpool.CarpoolID,
                 DriverID = userID,
-                FreeSeatsRemaining = carpool.FreeSeatsRemaining,
+                TotalSeatsCount = carpool.TotalSeatsCount,
                 Origin = carpool.Origin,
                 Destination = carpool.Destination,
                 DepartureDate = carpool.DepartureDate
@@ -89,32 +91,16 @@ namespace TecAlliance.Carpool.Business
                 CarpoolPassengersModelData carpoolPassenger = new CarpoolPassengersModelData()
                 { Carpool_ID = (int)newCarpool.CarpoolID, User_ID = (int)user.ID };
 
-                if (user.IsDriver == true && designatedDriver == true)
+                if (user.IsDriver == true)
                 {
-                    _carpoolsDataServiceSQL.AddCarpoolWithDriverDataService(newCarpool);
+                    _carpoolsDataServiceSQL.AddCarpoolDataService(newCarpool);
+                    return newCarpool;
                 }
 
-                if (!designatedDriver)
+                else
                 {
-                    _carpoolsDataServiceSQL.AddCarpoolNODriverDataService(newCarpool);
-                    
-                    //
-                    //
-                    //newCarpool.CarpoolID
-                    //
-                    //
-
-                    _usersDataServiceSQL.AddPassengerDataService(carpoolPassenger);
-                }
-
-                if (user.IsDriver == false && designatedDriver == true)
-                {
-                    //_carpoolsDataServiceSQL.AddCarpoolNODriverDataService(newCarpool);
-                    //_usersDataServiceSQL.AddPassengerDataService(carpoolPassenger);
                     return null;
-
                 }
-                return newCarpool;
             }
             else
             {
@@ -125,11 +111,27 @@ namespace TecAlliance.Carpool.Business
         /// <summary>
         /// This method will add a user to an allready existing carpool in the Database
         /// </summary>
-        public CarpoolsModelData JoinExistingCarpoolBusineeService(int userID, int carpoolID)
+        public CarpoolPassengersModelData JoinExistingCarpoolBusineeService(CarpoolPassengersModelData toJoin)
         {
-            user = _usersDataServiceSQL.ListUserByIdDataService(userID);
-//
-            
+            user = _usersDataServiceSQL.ListUserByIdDataService(toJoin.User_ID);
+            carpool = _carpoolsDataServiceSQL.ListCarpoolByIDDataService(toJoin.Carpool_ID);
+            passengerAllreadyInTheCarpool = _usersDataServiceSQL.ListPassengerInACarpoolDataService(toJoin.User_ID, toJoin.Carpool_ID);
+            var seatsCount = (int)carpool.TotalSeatsCount;
+            var seatsOccupied = _carpoolsDataServiceSQL.CountPassengersDataService(toJoin.Carpool_ID);
+            if (user != null && seatsOccupied < seatsCount && passengerAllreadyInTheCarpool == null)
+            {
+                CarpoolPassengersModelData newUserJoin = new CarpoolPassengersModelData()
+                {
+                    Carpool_ID = toJoin.Carpool_ID,
+                    User_ID = toJoin.User_ID,
+                };
+                _usersDataServiceSQL.AddPassengerDataService(newUserJoin);
+                return newUserJoin;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

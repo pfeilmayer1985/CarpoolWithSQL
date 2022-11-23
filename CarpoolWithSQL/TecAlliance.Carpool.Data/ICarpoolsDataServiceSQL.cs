@@ -4,9 +4,9 @@ namespace TecAlliance.Carpool.Data
 {
     public interface ICarpoolsDataServiceSQL
     {
-        void AddCarpoolNODriverDataService(CarpoolsModelData carpool);
-        void AddCarpoolWithDriverDataService(CarpoolsModelData carpool);
+        void AddCarpoolDataService(CarpoolsModelData carpool);
+        int CountPassengersDataService(int carpoolID);
         List<CarpoolsModelData> ListAllCarpoolsDataService();
-        CarpoolsModelData ListCarpoolByIDDataService(int id);
+        CarpoolsModelData ListCarpoolByIDDataService(int carpoolID);
     }
 }

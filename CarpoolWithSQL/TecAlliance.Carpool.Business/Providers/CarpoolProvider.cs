@@ -11,7 +11,7 @@ namespace TecAlliance.Carpool.Business.Providers
             return new CarpoolsModelDto()
             {
                 Driver = { },
-                FreeSeatsRemaining = 1,
+                TotalSeatsCount = 1,
                 Origin = "Schrozberg",
                 Destination = "Weikersheim",
                 DepartureDate = new DateTime(2022,12,31,13,30,45)

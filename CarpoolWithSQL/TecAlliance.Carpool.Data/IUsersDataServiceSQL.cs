@@ -11,6 +11,7 @@ namespace TecAlliance.Carpool.Data
         void EditUserDataService(UserBaseModelData user);
         List<CarpoolPassengersModelData> ListAllPassengersDataService();
         List<UserBaseModelData> ListAllUsersDataService();
+        List<CarpoolPassengersModelData> ListPassengerInACarpoolDataService(int userID, int carpoolID);
         UserBaseModelData ListUserByIdDataService(int id);
     }
 }

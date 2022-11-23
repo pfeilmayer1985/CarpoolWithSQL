@@ -27,7 +27,7 @@ namespace TecAlliance.Carpool.Data
                 {
                     while (reader.Read())
                     {
-                        users.Add(new UserBaseModelData((int)reader["UserID"], reader["Email"].ToString(), reader["PhoneNo"].ToString(), reader["Password"].ToString(), reader["Name"].ToString(), reader["Vorname"].ToString(), (bool)reader["IsDriver"]));
+                        users.Add(new UserBaseModelData((int)reader["UserID"], reader["Email"].ToString(), reader["PhoneNo"].ToString(), reader["Password"].ToString(), reader["FirstName"].ToString(), reader["LastName"].ToString(), (bool)reader["IsDriver"]));
                     }
 
                 }
@@ -64,8 +64,8 @@ namespace TecAlliance.Carpool.Data
                             reader["Email"].ToString().ToLower(),
                             reader["PhoneNo"].ToString(),
                             reader["Password"].ToString(),
-                            reader["Vorname"].ToString(),
-                            reader["Name"].ToString(),
+                            reader["FirstName"].ToString(),
+                            reader["LastName"].ToString(),
                             (bool)reader["IsDriver"]
                         );
                     }
@@ -86,7 +86,7 @@ namespace TecAlliance.Carpool.Data
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string queryString = $"INSERT INTO Users(Email,PhoneNo,Password,Name,Vorname,IsDriver) VALUES('{user.Email.ToLower()}','{user.PhoneNo}','{user.Password}','{user.LastName}','{user.FirstName}',{Convert.ToInt32(user.IsDriver)})";
+                string queryString = $"INSERT INTO Users(Email,PhoneNo,Password,FirstName,LastName,IsDriver) VALUES('{user.Email.ToLower()}','{user.PhoneNo}','{user.Password}','{user.LastName}','{user.FirstName}',{Convert.ToInt32(user.IsDriver)})";
                 SqlCommand command = new SqlCommand(queryString, connection);
                 connection.Open();
                 command.ExecuteNonQuery();
@@ -105,17 +105,16 @@ namespace TecAlliance.Carpool.Data
                     string queryString = $"Update Users SET Email ='{user.Email.ToLower()}'," +
                         $"PhoneNo = '{user.PhoneNo}'," +
                         $"Password = '{user.Password}'," +
-                        $"Name = '{user.LastName}'," +
-                        $"Vorname = '{user.FirstName}'," +
+                        $"FirstName = '{user.FirstName}'," +
+                        $"LastName = '{user.LastName}'," +
                         $"IsDriver = {Convert.ToInt32(user.IsDriver)}" +
-                        $"WHERE Email = '{user.Email}'";
+                        $" WHERE UserID = '{user.ID}'";
                     SqlCommand command = new SqlCommand(queryString, connection);
                     connection.Open();
                     command.ExecuteNonQuery();
                 }
             }
         }
-
 
         /// <summary>
         /// This method deletes/removes an existing user from the Users Database
@@ -130,7 +129,6 @@ namespace TecAlliance.Carpool.Data
                 command.ExecuteNonQuery();
             }
         }
-
 
         /// <summary>
         /// This method lists all the passengers in the CarpoolPassengers Database
@@ -159,6 +157,43 @@ namespace TecAlliance.Carpool.Data
                 }
             }
             return passengers;
+        }
+
+        /// <summary>
+        /// This method lists all the passengers in the CarpoolPassengers Database
+        /// </summary>
+        public List<CarpoolPassengersModelData> ListPassengerInACarpoolDataService(int userID, int carpoolID)
+        {
+
+            var passengers = new List<CarpoolPassengersModelData>();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string queryString = $"SELECT * FROM CarpoolPassengers WHERE PassengerID = {userID} AND CarpoolID = {carpoolID}";
+                SqlCommand command = new SqlCommand(queryString, connection);
+                connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                try
+                {
+                    while (reader.Read())
+                    {
+                        passengers.Add(new CarpoolPassengersModelData((int)reader["CarpoolID"], (int)reader["DriverID"]));
+                    }
+
+                }
+                finally
+                {
+                    reader.Close();
+                }
+            }
+
+            if (passengers.Count == 0)
+            {
+                return null;
+            }
+            else
+            {
+                return passengers;
+            }
         }
 
         /// <summary>
