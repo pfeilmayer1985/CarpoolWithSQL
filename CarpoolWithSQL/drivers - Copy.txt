@@ -1,0 +1,8 @@
+DID#PETMAX,4,Petre,Maxim,Volvo XC 60,Baia Mare,End
+DID#SECVIC,4,Second,Victim,Batmobil,string,string
+DID#ANDPFE,2,Andreea,Pfeilmayer,BMW X1,Schrozberg,End
+DID#HANGRO,2,Hans,Gross,Audi A6,Start,Niederstetten
+DID#SENVIV,4,Second,Victim,Old Rusty Bicycle,string,string
+DID#EMISOM,4,Emil,Somkereki,BMW X5,Start,Schrozberg
+DID#DORHOR,4,Doru,Horincar,Hyundai Tucson,Schrozberg,End
+DID#MAXMUS,4,Max,Mustemann,Peugeot 507,Stuttgart,Schrozberg

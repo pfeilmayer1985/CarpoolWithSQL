@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32901.215
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fahrgemeinschaft", "Fahrgemeinschaft\Fahrgemeinschaft.csproj", "{B6B65227-47CC-4FC5-AB89-EBAFC9DFFE89}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TecAlliance.Carpool.Api", "FahrgemeinschaftApi\TecAlliance.Carpool.Api.csproj", "{669321F4-D752-4F95-B3A9-EE064FC1C549}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TecAlliance.Carpool.Business", "TecAlliance.Carpool.Business\TecAlliance.Carpool.Business.csproj", "{9B4AD25D-EA82-4000-9C90-5F9FDB633023}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TecAlliance.Carpool.Data", "TecAlliance.Carpool.Data\TecAlliance.Carpool.Data.csproj", "{945285A6-D442-40B8-8240-DABE2AFC2294}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TecAlliance.Carpool.Data.Tests", "TecAlliance.Carpool.Data.Tests\TecAlliance.Carpool.Data.Tests.csproj", "{88B02C6C-8014-4C2C-8B34-E9D7C4C0FA3F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TecAlliance.Carpool.Business.Tests", "TecAlliance.Carpool.Business.Tests\TecAlliance.Carpool.Business.Tests.csproj", "{06B80C3B-0397-4235-86FD-E49904FC72B7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B6B65227-47CC-4FC5-AB89-EBAFC9DFFE89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6B65227-47CC-4FC5-AB89-EBAFC9DFFE89}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6B65227-47CC-4FC5-AB89-EBAFC9DFFE89}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6B65227-47CC-4FC5-AB89-EBAFC9DFFE89}.Release|Any CPU.Build.0 = Release|Any CPU
+		{669321F4-D752-4F95-B3A9-EE064FC1C549}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{669321F4-D752-4F95-B3A9-EE064FC1C549}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{669321F4-D752-4F95-B3A9-EE064FC1C549}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{669321F4-D752-4F95-B3A9-EE064FC1C549}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B4AD25D-EA82-4000-9C90-5F9FDB633023}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B4AD25D-EA82-4000-9C90-5F9FDB633023}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B4AD25D-EA82-4000-9C90-5F9FDB633023}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B4AD25D-EA82-4000-9C90-5F9FDB633023}.Release|Any CPU.Build.0 = Release|Any CPU
+		{945285A6-D442-40B8-8240-DABE2AFC2294}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{945285A6-D442-40B8-8240-DABE2AFC2294}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{945285A6-D442-40B8-8240-DABE2AFC2294}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{945285A6-D442-40B8-8240-DABE2AFC2294}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88B02C6C-8014-4C2C-8B34-E9D7C4C0FA3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88B02C6C-8014-4C2C-8B34-E9D7C4C0FA3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88B02C6C-8014-4C2C-8B34-E9D7C4C0FA3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88B02C6C-8014-4C2C-8B34-E9D7C4C0FA3F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{06B80C3B-0397-4235-86FD-E49904FC72B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06B80C3B-0397-4235-86FD-E49904FC72B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06B80C3B-0397-4235-86FD-E49904FC72B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06B80C3B-0397-4235-86FD-E49904FC72B7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {31D80154-AB77-4729-ABEA-25DAA083182D}
+	EndGlobalSection
+EndGlobal
