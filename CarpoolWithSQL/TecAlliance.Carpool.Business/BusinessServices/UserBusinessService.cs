@@ -38,13 +38,13 @@ namespace TecAlliance.Carpool.Business
         /// <summary>
         /// This method will return one detailed user info based on a search after his IDs
         /// </summary>
-        public UserBaseModelDto ListUserDataById(int id)
+        public UserBaseModelDto ListUserDataById(int userID)
         {
             userList = _userDataServiceSQL.ListAllUsersDataService();
-            var findUser = userList.FirstOrDefault(e => e.ID.Equals(id));
+            var findUser = userList.FirstOrDefault(e => e.ID.Equals(userID));
             if (findUser != null)
             {
-                return ConvertUserToDto(_userDataServiceSQL.ListUserByIdDataService(id));
+                return ConvertUserToDto(_userDataServiceSQL.ListUserByIdDataService(userID));
             }
 
             else
@@ -109,21 +109,27 @@ namespace TecAlliance.Carpool.Business
         /// <summary>
         /// This method will delete a user based on his ID
         /// </summary>
-        public int DeleteUserBusinessService(int id, string password)
+        public int DeleteUserBusinessService(int userID, string password)
         {
-            userList = _userDataServiceSQL.ListAllUsersDataService();
+            user = _userDataServiceSQL.ListUserByIdDataService(userID);
+            passengersList = _userDataServiceSQL.ListAllPassengersDataService();
+            var isUserAlsoPassenger = passengersList.FirstOrDefault(e => e.User_ID.Equals(userID));
 
-            var findUser = userList.FirstOrDefault(e => e.ID.Equals(id));
-
-            if (findUser != null && findUser.Password == password)
+            if (user != null && user.Password == password && isUserAlsoPassenger != null)
             {
-                int userToDelete = (int)findUser.ID;
+                int userToDelete = (int)user.ID;
+                _userDataServiceSQL.DeletePassengerAllCarpoolsDataService(userToDelete);
+                _userDataServiceSQL.DeleteUserDataService(userToDelete);
+                return userToDelete;
+            }
+            else if (user != null && user.Password == password)
+            {
+                int userToDelete = (int)user.ID;
                 _userDataServiceSQL.DeleteUserDataService(userToDelete);
                 return userToDelete;
             }
             else
             {
-                //return null;
                 return 0;
             }
 
@@ -164,7 +170,7 @@ namespace TecAlliance.Carpool.Business
                     User_ID = userID
                 };
 
-                _userDataServiceSQL.DeletePassengerFromCarpoolDataService(passengerToDelete);
+                _userDataServiceSQL.DeletePassengerFromSpecificCarpoolDataService(passengerToDelete);
                 return passengerToDelete;
             }
             else

@@ -95,7 +95,7 @@ namespace TecAlliance.Carpool.Data
         /// <summary>
         /// This method counts the actual number of members in a Carpool
         /// </summary>
-        public int CountPassengersDataService(int carpoolID)
+        public int CountPassengersByCarpoolIDDataService(int carpoolID)
         {
             var carpools = new CarpoolsModelData();
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -122,6 +122,20 @@ namespace TecAlliance.Carpool.Data
                 return activePassengers;
             }
 
+        }
+
+        /// <summary>
+        /// This method deletes/removes an existing carpool from the Carpools Database
+        /// </summary>
+        public void DeleteCarpoolByIDDataService(int carpoolID)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string queryString = $"DELETE FROM Carpools WHERE CarpoolID = '{carpoolID}'";
+                SqlCommand command = new SqlCommand(queryString, connection);
+                connection.Open();
+                command.ExecuteNonQuery();
+            }
         }
     }
 }

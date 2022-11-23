@@ -46,6 +46,8 @@ namespace TecAlliance.Carpool.Api.Controllers
 
         [HttpPost]
         [Route("DriverCreatesCarpool{userID}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<CarpoolsModelData>> AddCarpool(int userID, CarpoolsModelData carpool)
         {
             CarpoolsModelData newCarpool = _carpoolsBusinessService.AddCarpoolBusineeService(userID, carpool);
@@ -54,6 +56,8 @@ namespace TecAlliance.Carpool.Api.Controllers
 
         [HttpPost]
         [Route("PassengerJoinsExistingCarpool{carpoolID},{userID}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<CarpoolPassengersModelData>> JoinCarpool(int carpoolID, int userID)
         {
             CarpoolPassengersModelData newPassengerToJoinCarpool = new CarpoolPassengersModelData(carpoolID, userID);

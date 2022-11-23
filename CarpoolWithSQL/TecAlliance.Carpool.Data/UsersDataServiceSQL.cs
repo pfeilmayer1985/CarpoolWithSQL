@@ -147,7 +147,7 @@ namespace TecAlliance.Carpool.Data
                 {
                     while (reader.Read())
                     {
-                        passengers.Add(new CarpoolPassengersModelData((int)reader["CarpoolID"], (int)reader["DriverID"]));
+                        passengers.Add(new CarpoolPassengersModelData((int)reader["CarpoolID"], (int)reader["PassengerID"]));
                     }
 
                 }
@@ -213,11 +213,22 @@ namespace TecAlliance.Carpool.Data
         /// <summary>
         /// This method deletes/removes an existing passenger from the CarpoolPassengers Database
         /// </summary>
-        public void DeletePassengerFromCarpoolDataService(CarpoolPassengersModelData passenger)
+        public void DeletePassengerFromSpecificCarpoolDataService(CarpoolPassengersModelData passenger)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 string queryString = $"DELETE FROM CarpoolPassengers WHERE PassengerID = '{passenger.User_ID}' AND CarpoolID = '{passenger.Carpool_ID}'";
+                SqlCommand command = new SqlCommand(queryString, connection);
+                connection.Open();
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public void DeletePassengerAllCarpoolsDataService(int userID)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string queryString = $"DELETE FROM CarpoolPassengers WHERE PassengerID = '{userID}'";
                 SqlCommand command = new SqlCommand(queryString, connection);
                 connection.Open();
                 command.ExecuteNonQuery();

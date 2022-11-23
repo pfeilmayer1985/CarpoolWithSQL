@@ -117,7 +117,7 @@ namespace TecAlliance.Carpool.Business
             carpool = _carpoolsDataServiceSQL.ListCarpoolByIDDataService(toJoin.Carpool_ID);
             passengerAllreadyInTheCarpool = _usersDataServiceSQL.ListPassengerInACarpoolDataService(toJoin.User_ID, toJoin.Carpool_ID);
             var seatsCount = (int)carpool.TotalSeatsCount;
-            var seatsOccupied = _carpoolsDataServiceSQL.CountPassengersDataService(toJoin.Carpool_ID);
+            var seatsOccupied = _carpoolsDataServiceSQL.CountPassengersByCarpoolIDDataService(toJoin.Carpool_ID);
             if (user != null && seatsOccupied < seatsCount && passengerAllreadyInTheCarpool == null)
             {
                 CarpoolPassengersModelData newUserJoin = new CarpoolPassengersModelData()
@@ -132,6 +132,28 @@ namespace TecAlliance.Carpool.Business
             {
                 return null;
             }
+        }
+
+        /// <summary>
+        /// This method will delete a carpool based on it's ID
+        /// </summary>
+        public int DeleteCarpoolByCarpoolIDBusinessService(int carpoolID, int userID, int password)
+        {
+            carpool = _carpoolsDataServiceSQL.ListCarpoolByIDDataService(carpoolID);
+            user = _usersDataServiceSQL.ListUserByIdDataService(userID);
+
+            if (carpool != null && user != null && user.Password == password.ToString())
+            {
+                int carpoolToDelete = (int)carpool.CarpoolID;
+                _carpoolsDataServiceSQL.DeleteCarpoolByIDDataService(carpoolToDelete);
+                return carpoolToDelete;
+            }
+            
+            else
+            {
+                return 0;
+            }
+
         }
     }
 }
