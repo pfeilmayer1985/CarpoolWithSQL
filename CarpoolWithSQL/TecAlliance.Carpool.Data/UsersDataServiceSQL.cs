@@ -86,8 +86,26 @@ namespace TecAlliance.Carpool.Data
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string queryString = $"INSERT INTO Users(Email,PhoneNo,Password,FirstName,LastName,IsDriver) VALUES('{user.Email.ToLower()}','{user.PhoneNo}','{user.Password}','{user.LastName}','{user.FirstName}',{Convert.ToInt32(user.IsDriver)})";
+                string queryString = $"INSERT INTO Users(Email,PhoneNo,Password,FirstName,LastName,IsDriver) " +
+                    $"VALUES(@Email," +
+                    $"@PhoneNo," +
+                    $"@Password," +
+                    $"@FirstName," +
+                    $"@LastName," +
+                    $"@IsDriver)";
                 SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add("@Email", SqlDbType.VarChar);
+                command.Parameters["@Email"].Value = user.Email.ToLower();
+                command.Parameters.Add("@PhoneNo", SqlDbType.VarChar);
+                command.Parameters["@PhoneNo"].Value = user.PhoneNo;
+                command.Parameters.Add("@Password", SqlDbType.VarChar);
+                command.Parameters["@Password"].Value = user.Password;
+                command.Parameters.Add("@FirstName", SqlDbType.VarChar);
+                command.Parameters["@FirstName"].Value = user.FirstName;
+                command.Parameters.Add("@LastName", SqlDbType.VarChar);
+                command.Parameters["@LastName"].Value = user.LastName;
+                command.Parameters.Add("@IsDriver", SqlDbType.Int);
+                command.Parameters["@IsDriver"].Value = Convert.ToInt32(user.IsDriver);
                 connection.Open();
                 command.ExecuteNonQuery();
             }
@@ -102,14 +120,28 @@ namespace TecAlliance.Carpool.Data
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    string queryString = $"Update Users SET Email ='{user.Email.ToLower()}'," +
-                        $"PhoneNo = '{user.PhoneNo}'," +
-                        $"Password = '{user.Password}'," +
-                        $"FirstName = '{user.FirstName}'," +
-                        $"LastName = '{user.LastName}'," +
-                        $"IsDriver = {Convert.ToInt32(user.IsDriver)}" +
-                        $" WHERE UserID = '{user.ID}'";
+                    string queryString = $"Update Users SET Email =@Email," +
+                        $" PhoneNo = @PhoneNo," +
+                        $" Password = @Password," +
+                        $" FirstName = @FirstName," +
+                        $" LastName = @LastName," +
+                        $" IsDriver = @IsDriver" +
+                        $" WHERE UserID = @UserID";
                     SqlCommand command = new SqlCommand(queryString, connection);
+                    command.Parameters.Add("@Email", SqlDbType.VarChar);
+                    command.Parameters["@Email"].Value = user.Email.ToLower();
+                    command.Parameters.Add("@PhoneNo", SqlDbType.VarChar);
+                    command.Parameters["@PhoneNo"].Value = user.PhoneNo;
+                    command.Parameters.Add("@Password", SqlDbType.VarChar);
+                    command.Parameters["@Password"].Value = user.Password;
+                    command.Parameters.Add("@FirstName", SqlDbType.VarChar);
+                    command.Parameters["@FirstName"].Value = user.FirstName;
+                    command.Parameters.Add("@LastName", SqlDbType.VarChar);
+                    command.Parameters["@LastName"].Value = user.LastName;
+                    command.Parameters.Add("@IsDriver", SqlDbType.Int);
+                    command.Parameters["@IsDriver"].Value = Convert.ToInt32(user.IsDriver);
+                    command.Parameters.Add("@UserID", SqlDbType.Int);
+                    command.Parameters["@UserID"].Value = user.ID;
                     connection.Open();
                     command.ExecuteNonQuery();
                 }

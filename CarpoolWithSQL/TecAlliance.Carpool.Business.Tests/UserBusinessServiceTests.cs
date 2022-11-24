@@ -3,14 +3,14 @@ using Moq;
 namespace TecAlliance.Carpool.Business.Tests
 {
     [TestClass]
-    public class PassengerBusinessServiceTests
+    public class UserBusinessServiceTests
     {
       //  PassengerBusinessService _passengerBusinessService = new PassengerBusinessService();
         
         private readonly PassengerBusinessService _sysUnderTest;
         private readonly Mock<IPassengerBusinessService> _passengerBusinessServMock = new Mock<IPassengerBusinessService>();
         
-        public PassengerBusinessServiceTests()
+        public UserBusinessServiceTests()
         {
             _sysUnderTest = new PassengerBusinessService();
         }

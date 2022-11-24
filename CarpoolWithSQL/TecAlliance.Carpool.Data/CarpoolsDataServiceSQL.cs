@@ -49,7 +49,7 @@ namespace TecAlliance.Carpool.Data
             {
                 string queryString = "SELECT * FROM Carpools WHERE CarpoolID = @CarpoolID";
                 SqlCommand command = new SqlCommand(queryString, connection);
-                command.Parameters.Add("@CarpoolID", SqlDbType.VarChar);
+                command.Parameters.Add("@CarpoolID", SqlDbType.Int);
                 command.Parameters["@CarpoolID"].Value = carpoolID;
                 connection.Open();
                 SqlDataReader reader = command.ExecuteReader();
@@ -131,10 +131,15 @@ namespace TecAlliance.Carpool.Data
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string queryString = $"DELETE FROM Carpools WHERE CarpoolID = '{carpoolID}'";
+                string queryString = $"DELETE FROM Carpools WHERE CarpoolID = @CarpoolID";
                 SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add("@CarpoolID", SqlDbType.Int);
+                command.Parameters["@CarpoolID"].Value = carpoolID;
                 connection.Open();
                 command.ExecuteNonQuery();
+
+                
+                
             }
         }
 
@@ -145,8 +150,10 @@ namespace TecAlliance.Carpool.Data
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string queryString = $"DELETE FROM CarpoolPassengers WHERE CarpoolID = '{carpoolID}'";
+                string queryString = $"DELETE FROM CarpoolPassengers WHERE CarpoolID = @CarpoolID";
                 SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add("@CarpoolID", SqlDbType.Int);
+                command.Parameters["@CarpoolID"].Value = carpoolID;
                 connection.Open();
                 command.ExecuteNonQuery();
             }
@@ -161,12 +168,22 @@ namespace TecAlliance.Carpool.Data
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    string queryString = $"Update Carpools SET TotalSeatsCount = {carpool.TotalSeatsCount}," +
-                        $" Origin = '{carpool.Origin}'," +
-                        $" Destination = '{carpool.Destination}'," +
-                        $" DepartureDate = '{carpool.DepartureDate}'" +
-                        $" WHERE CarpoolID = {carpool.CarpoolID}";
+                    string queryString = $"Update Carpools SET TotalSeatsCount = @TotalSeatsCount," +
+                        $" Origin = @Origin," +
+                        $" Destination = @Destination," +
+                        $" DepartureDate = @DepartureDate" +
+                        $" WHERE CarpoolID = @CarpoolID";
                     SqlCommand command = new SqlCommand(queryString, connection);
+                    command.Parameters.Add("@TotalSeatsCount", SqlDbType.Int);
+                    command.Parameters["@TotalSeatsCount"].Value = carpool.TotalSeatsCount;
+                    command.Parameters.Add("@Origin", SqlDbType.VarChar);
+                    command.Parameters["@Origin"].Value = carpool.Origin;
+                    command.Parameters.Add("@Destination", SqlDbType.VarChar);
+                    command.Parameters["@Destination"].Value = carpool.Destination;
+                    command.Parameters.Add("@DepartureDate", SqlDbType.VarChar);
+                    command.Parameters["@DepartureDate"].Value = carpool.DepartureDate;
+                    command.Parameters.Add("@CarpoolID", SqlDbType.Int);
+                    command.Parameters["@CarpoolID"].Value = carpool.CarpoolID;
                     connection.Open();
                     command.ExecuteNonQuery();
                 }

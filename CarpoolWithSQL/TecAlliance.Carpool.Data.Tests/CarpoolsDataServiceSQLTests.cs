@@ -4,15 +4,15 @@ using TecAlliance.Carpool.Data.Models;
 namespace TecAlliance.Carpool.Data.Tests
 {
     [TestClass]
-    public class CarpoolDataServiceTests
+    public class CarpoolsDataServiceSQLTests
     {
-        CarpoolDataService _carpoolDataService = new CarpoolDataService();
+        CarpoolsDataServiceSQL _carpoolsDataServiceSQL = new CarpoolsDataServiceSQL();
 
         [TestMethod]
-        public void CheckCarpoolInFile()
+        public void CheckCarpoolExist()
         {
             // Arrange
-            _carpoolDataService.Path = "C:\\010 Projects\\006 Fahrgemeinschaft\\Fahrgemeinschaft\\testcarpools.txt";
+            
 
             // Act
             string[] result = _carpoolDataService.ListAllCarpoolsDataService();
