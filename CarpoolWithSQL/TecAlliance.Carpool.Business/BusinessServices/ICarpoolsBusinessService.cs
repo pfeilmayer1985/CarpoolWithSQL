@@ -7,7 +7,8 @@ namespace TecAlliance.Carpool.Business
     {
         CarpoolsModelData AddCarpoolBusineeService(int userID, CarpoolsModelData carpool);
         UserBaseModelDto ConvertUserToDto(UserBaseModelData user);
-        CarpoolPassengersModelData JoinExistingCarpoolBusineeService(CarpoolPassengersModelData whereToJoinUserAndCarpool);
+        int DeleteCarpoolByCarpoolIDBusinessService(int carpoolID, int userID, string password);
+        CarpoolPassengersModelData JoinExistingCarpoolBusineeService(CarpoolPassengersModelData toJoin);
         List<CarpoolsModelData> ListAllCarpoolsBusinessService();
         CarpoolsModelDto ListOneCarpoolByIdBusinessService(int carpoolID);
     }

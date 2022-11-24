@@ -82,7 +82,7 @@ namespace TecAlliance.Carpool.Api.Controllers
         [Route("DeletePassengerByID{userID}")]
         public async Task<IActionResult> DeleteUser(int userID, string password)
         {
-            var item = _newUserBusinessService.DeleteUserBusinessService(userID, password);
+            var item = _newUserBusinessService.ListUserDataById(userID);
             if (item == null)
             {
                 return NotFound();

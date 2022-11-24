@@ -40,9 +40,9 @@ namespace TecAlliance.Carpool.Business
         /// </summary>
         public UserBaseModelDto ListUserDataById(int userID)
         {
-            userList = _userDataServiceSQL.ListAllUsersDataService();
-            var findUser = userList.FirstOrDefault(e => e.ID.Equals(userID));
-            if (findUser != null)
+            user = _userDataServiceSQL.ListUserByIdDataService(userID);
+            //var findUser = userList.FirstOrDefault(e => e.ID.Equals(userID));
+            if (user != null)
             {
                 return ConvertUserToDto(_userDataServiceSQL.ListUserByIdDataService(userID));
             }
@@ -58,6 +58,7 @@ namespace TecAlliance.Carpool.Business
         /// </summary>
         public UserBaseModelData AddUserBusineeService(UserBaseModelData newUserModel)
         {
+            userList = _userDataServiceSQL.ListAllUsersDataService();
 
             UserBaseModelData newUser = new UserBaseModelData()
             {
@@ -70,9 +71,7 @@ namespace TecAlliance.Carpool.Business
                 IsDriver = newUserModel.IsDriver
             };
             _userDataServiceSQL.AddUserDataService(newUser);
-
             return newUser;
-
 
         }
 

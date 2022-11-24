@@ -9,5 +9,6 @@ namespace TecAlliance.Carpool.Data
         void DeleteCarpoolByIDDataService(int carpoolID);
         List<CarpoolsModelData> ListAllCarpoolsDataService();
         CarpoolsModelData ListCarpoolByIDDataService(int carpoolID);
+        void RemoveCarpoolByIDFromPassengerTableDataService(int carpoolID);
     }
 }

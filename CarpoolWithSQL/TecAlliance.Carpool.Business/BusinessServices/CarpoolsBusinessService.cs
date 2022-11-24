@@ -137,7 +137,7 @@ namespace TecAlliance.Carpool.Business
         /// <summary>
         /// This method will delete a carpool based on it's ID
         /// </summary>
-        public int DeleteCarpoolByCarpoolIDBusinessService(int carpoolID, int userID, int password)
+        public int DeleteCarpoolByCarpoolIDBusinessService(int carpoolID, int userID, string password)
         {
             carpool = _carpoolsDataServiceSQL.ListCarpoolByIDDataService(carpoolID);
             user = _usersDataServiceSQL.ListUserByIdDataService(userID);
@@ -145,10 +145,11 @@ namespace TecAlliance.Carpool.Business
             if (carpool != null && user != null && user.Password == password.ToString())
             {
                 int carpoolToDelete = (int)carpool.CarpoolID;
+                _carpoolsDataServiceSQL.RemoveCarpoolByIDFromPassengerTableDataService(carpoolToDelete);
                 _carpoolsDataServiceSQL.DeleteCarpoolByIDDataService(carpoolToDelete);
                 return carpoolToDelete;
             }
-            
+
             else
             {
                 return 0;

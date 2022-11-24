@@ -65,27 +65,27 @@ namespace TecAlliance.Carpool.Api.Controllers
             return newPassengerToJoinCarpool;
         }
 
-        /*
-        [HttpDelete("{idCarpool}")]
+        
+        [HttpDelete]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        //[Route("api/CarPoolApi/DeleteCarpoolById")]
-        public async Task<IActionResult> DeleteCarpool(string idCarpool)
+        [Route("DeleteCarpoolById{carpoolID},{userID},{password}")]
+        public async Task<IActionResult> DeleteCarpoolByID(int carpoolID, int userID, string password)
         {
-            var item = _carpoolBusinessService.DeleteCarpoolByDriverIdBu(idCarpool.ToUpper());
-
+            var item = _carpoolsBusinessService.ListOneCarpoolByIdBusinessService(carpoolID);
             if (item == null)
             {
                 return NotFound();
             }
             else
             {
-                _carpoolBusinessService.DeleteCarpoolByDriverIdBu(idCarpool.ToUpper());
+                _carpoolsBusinessService.DeleteCarpoolByCarpoolIDBusinessService(carpoolID, userID, password);
                 return NoContent();
             }
         }
 
+        /*
         [HttpDelete("{idDriver}/{idPassenger}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -103,8 +103,8 @@ namespace TecAlliance.Carpool.Api.Controllers
                 _carpoolBusinessService.RemovePassengerFromCarpoolByPassengerIdAndDriverIdBu(idDriver.ToUpper(), idPassenger.ToUpper());
                 return NoContent();
             }
-        }
+        }*/
 
-        */
+        
     }
 }

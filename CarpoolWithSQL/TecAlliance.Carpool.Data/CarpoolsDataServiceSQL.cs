@@ -137,5 +137,19 @@ namespace TecAlliance.Carpool.Data
                 command.ExecuteNonQuery();
             }
         }
+
+        /// <summary>
+        /// This method deletes/removes an existing carpool from the Carpools Database
+        /// </summary>
+        public void RemoveCarpoolByIDFromPassengerTableDataService(int carpoolID)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string queryString = $"DELETE FROM CarpoolPassengers WHERE CarpoolID = '{carpoolID}'";
+                SqlCommand command = new SqlCommand(queryString, connection);
+                connection.Open();
+                command.ExecuteNonQuery();
+            }
+        }
     }
 }
