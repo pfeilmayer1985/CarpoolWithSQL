@@ -5,10 +5,9 @@ namespace TecAlliance.Carpool.Business
 {
     public interface IUserBusinessService
     {
-        CarpoolPassengersModelData AddPassengerBusineeService(int carpoolID, int userID);
         UserBaseModelData AddUserBusineeService(UserBaseModelData newUserModel);
         UserBaseModelDto ConvertUserToDto(UserBaseModelData user);
-        CarpoolPassengersModelData DeletePassengerFromCarpoolBusinessService(int carpoolID, int userID);
+        CarpoolPassengersModelData DeletePassengerFromCarpoolBusinessService(int carpoolID, int userID, string password);
         int DeleteUserBusinessService(int userID, string password);
         UserBaseModelData EditUserBusinessService(int userID, string password, UserBaseModelData userM);
         List<UserBaseModelData> ListAllUserData();

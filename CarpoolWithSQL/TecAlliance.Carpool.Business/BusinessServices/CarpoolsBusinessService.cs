@@ -118,7 +118,7 @@ namespace TecAlliance.Carpool.Business
             passengerAllreadyInTheCarpool = _usersDataServiceSQL.ListPassengerInACarpoolDataService(toJoin.User_ID, toJoin.Carpool_ID);
             var seatsCount = (int)carpool.TotalSeatsCount;
             var seatsOccupied = _carpoolsDataServiceSQL.CountPassengersByCarpoolIDDataService(toJoin.Carpool_ID);
-            if (user != null && seatsOccupied < seatsCount && passengerAllreadyInTheCarpool == null)
+            if (user != null && seatsOccupied < seatsCount && passengerAllreadyInTheCarpool == null && user.ID != carpool.DriverID)
             {
                 CarpoolPassengersModelData newUserJoin = new CarpoolPassengersModelData()
                 {

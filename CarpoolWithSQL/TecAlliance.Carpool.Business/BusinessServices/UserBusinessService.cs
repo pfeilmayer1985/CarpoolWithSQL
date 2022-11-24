@@ -13,6 +13,7 @@ namespace TecAlliance.Carpool.Business
         List<CarpoolsModelData> carpoolsList;
         List<CarpoolPassengersModelData> passengersList;
         UserBaseModelData user;
+        CarpoolsModelData carpool;
 
         public UserBusinessService(IUsersDataServiceSQL userDataServiceSQL, ICarpoolsDataServiceSQL carpoolDataServiceSQL)
         {
@@ -134,34 +135,43 @@ namespace TecAlliance.Carpool.Business
 
         }
 
+        /*
         /// <summary>
         /// This method will add a new user in the Database
         /// </summary>
         public CarpoolPassengersModelData AddPassengerBusineeService(int carpoolID, int userID)
         {
-
-            CarpoolPassengersModelData newPassenger = new CarpoolPassengersModelData()
+            user = _userDataServiceSQL.ListUserByIdDataService(userID);
+            carpool = _carpoolsDataServiceSQL.ListCarpoolByIDDataService(carpoolID);
+            passengersList = _userDataServiceSQL.ListPassengerInACarpoolDataService(userID, carpoolID);
+            if (user != null && userID != carpool.DriverID && userID == null)
             {
-                Carpool_ID = carpoolID,
-                User_ID = userID
-            };
-            _userDataServiceSQL.AddPassengerDataService(newPassenger);
-
-            return newPassenger;
+                CarpoolPassengersModelData newPassenger = new CarpoolPassengersModelData()
+                {
+                    Carpool_ID = carpoolID,
+                    User_ID = userID
+                };
+                _userDataServiceSQL.AddPassengerDataService(newPassenger);
+                return newPassenger;
+            }
+            else
+            {
+                return null;
+            }
         }
+        */
 
         /// <summary>
         /// This method will delete a passenger from a Carpool (ID) based on his UserID
         /// </summary>
-        public CarpoolPassengersModelData DeletePassengerFromCarpoolBusinessService(int carpoolID, int userID)
+        public CarpoolPassengersModelData DeletePassengerFromCarpoolBusinessService(int carpoolID, int userID, string password)
         {
             passengersList = _userDataServiceSQL.ListAllPassengersDataService();
-            carpoolsList = _carpoolsDataServiceSQL.ListAllCarpoolsDataService();
+            carpool = _carpoolsDataServiceSQL.ListCarpoolByIDDataService(carpoolID);
 
             var identifyPassenger = passengersList.First(p => p.User_ID.Equals(userID));
-            var identifyCarpool = carpoolsList.First(c => c.CarpoolID.Equals(carpoolID));
 
-            if (identifyPassenger != null && identifyCarpool != null)
+            if (identifyPassenger != null && user.Password == password && carpool != null)
             {
                 CarpoolPassengersModelData passengerToDelete = new CarpoolPassengersModelData
                 {
