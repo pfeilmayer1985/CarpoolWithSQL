@@ -156,5 +156,35 @@ namespace TecAlliance.Carpool.Business
             }
 
         }
+
+        /// <summary>
+        /// This method will edit/replace the data of a carpool based on it's ID, driver's ID and driver's password
+        /// </summary>
+        public CarpoolsModelData EditCarpoolBusinessService(int carpoolID, int userID, string password, CarpoolsModelData eCarpool)
+        {
+            user = _usersDataServiceSQL.ListUserByIdDataService(userID);
+            carpool = _carpoolsDataServiceSQL.ListCarpoolByIDDataService(carpoolID);
+
+            if (user != null && user.Password == password && carpool.DriverID == user.ID)
+            {
+
+                CarpoolsModelData editedCarpool = new CarpoolsModelData()
+                {
+                    CarpoolID = carpoolID,
+                    DriverID = userID,
+                    TotalSeatsCount = eCarpool.TotalSeatsCount,
+                    Origin = eCarpool.Origin,
+                    Destination = eCarpool.Destination,
+                    DepartureDate = eCarpool.DepartureDate,
+                };
+                _carpoolsDataServiceSQL.EditCarpoolDataService(editedCarpool);
+
+                return editedCarpool;
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

@@ -151,5 +151,26 @@ namespace TecAlliance.Carpool.Data
                 command.ExecuteNonQuery();
             }
         }
+
+        /// <summary>
+        /// This method replaces saved data with new ones for a defined user in the Database
+        /// </summary>
+        public void EditCarpoolDataService(CarpoolsModelData carpool)
+        {
+            if (carpool != null)
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    string queryString = $"Update Carpools SET TotalSeatsCount = {carpool.TotalSeatsCount}," +
+                        $" Origin = '{carpool.Origin}'," +
+                        $" Destination = '{carpool.Destination}'," +
+                        $" DepartureDate = '{carpool.DepartureDate}'" +
+                        $" WHERE CarpoolID = {carpool.CarpoolID}";
+                    SqlCommand command = new SqlCommand(queryString, connection);
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
     }
 }
