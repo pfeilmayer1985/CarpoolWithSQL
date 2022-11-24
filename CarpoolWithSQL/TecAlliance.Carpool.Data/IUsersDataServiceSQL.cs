@@ -8,11 +8,11 @@ namespace TecAlliance.Carpool.Data
         void AddUserDataService(UserBaseModelData user);
         void DeletePassengerAllCarpoolsDataService(int userID);
         void DeletePassengerFromSpecificCarpoolDataService(CarpoolPassengersModelData passenger);
-        void DeleteUserDataService(int id);
+        void DeleteUserDataService(int userID);
         void EditUserDataService(UserBaseModelData user);
         List<CarpoolPassengersModelData> ListAllPassengersDataService();
         List<UserBaseModelData> ListAllUsersDataService();
         List<CarpoolPassengersModelData> ListPassengerInACarpoolDataService(int userID, int carpoolID);
-        UserBaseModelData ListUserByIdDataService(int id);
+        UserBaseModelData ListUserByIdDataService(int userID);
     }
 }

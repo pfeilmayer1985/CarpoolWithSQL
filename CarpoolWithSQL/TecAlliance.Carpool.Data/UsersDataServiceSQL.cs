@@ -42,7 +42,7 @@ namespace TecAlliance.Carpool.Data
         /// <summary>
         /// This method lists one selected user from the Database based on UserID
         /// </summary>
-        public UserBaseModelData ListUserByIdDataService(int id)
+        public UserBaseModelData ListUserByIdDataService(int userID)
         {
 
             var users = new UserBaseModelData();
@@ -50,8 +50,8 @@ namespace TecAlliance.Carpool.Data
             {
                 string queryString = "SELECT * FROM Users WHERE UserID = @UserID";
                 SqlCommand command = new SqlCommand(queryString, connection);
-                command.Parameters.Add("@UserID", SqlDbType.VarChar);
-                command.Parameters["@UserID"].Value = id;
+                command.Parameters.Add("@UserID", SqlDbType.Int);
+                command.Parameters["@UserID"].Value = userID;
                 connection.Open();
                 SqlDataReader reader = command.ExecuteReader();
                 try
@@ -151,12 +151,14 @@ namespace TecAlliance.Carpool.Data
         /// <summary>
         /// This method deletes/removes an existing user from the Users Database
         /// </summary>
-        public void DeleteUserDataService(int id)
+        public void DeleteUserDataService(int userID)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string queryString = $"DELETE FROM Users WHERE UserID = '{id}'";
+                string queryString = "SELECT * FROM Users WHERE UserID = @UserID";
                 SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add("@UserID", SqlDbType.Int);
+                command.Parameters["@UserID"].Value = userID;
                 connection.Open();
                 command.ExecuteNonQuery();
             }
@@ -200,8 +202,12 @@ namespace TecAlliance.Carpool.Data
             var passengers = new List<CarpoolPassengersModelData>();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string queryString = $"SELECT * FROM CarpoolPassengers WHERE PassengerID = {userID} AND CarpoolID = {carpoolID}";
+                string queryString = $"SELECT * FROM CarpoolPassengers WHERE PassengerID = @UserID AND CarpoolID = @CarpoolID";
                 SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add("@UserID", SqlDbType.Int);
+                command.Parameters["@UserID"].Value = userID;
+                command.Parameters.Add("@CarpoolID", SqlDbType.Int);
+                command.Parameters["@CarpoolID"].Value = carpoolID;
                 connection.Open();
                 SqlDataReader reader = command.ExecuteReader();
                 try
@@ -235,33 +241,46 @@ namespace TecAlliance.Carpool.Data
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string queryString = $"INSERT INTO CarpoolPassengers (CarpoolID,PassengerID) VALUES('{passenger.Carpool_ID}','{passenger.User_ID}')";
+                string queryString = $"INSERT INTO CarpoolPassengers (CarpoolID,PassengerID) VALUES(@CarpoolID,@PassengerID)";
                 SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add("@CarpoolID", SqlDbType.Int);
+                command.Parameters["@CarpoolID"].Value = passenger.Carpool_ID;
+                command.Parameters.Add("@PassengerID", SqlDbType.Int);
+                command.Parameters["@PassengerID"].Value = passenger.User_ID;
                 connection.Open();
                 command.ExecuteNonQuery();
             }
         }
 
         /// <summary>
-        /// This method deletes/removes an existing passenger from the CarpoolPassengers Database
+        /// This method deletes an existing passenger from a specific Carpool in the CarpoolPassengers Database
         /// </summary>
         public void DeletePassengerFromSpecificCarpoolDataService(CarpoolPassengersModelData passenger)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string queryString = $"DELETE FROM CarpoolPassengers WHERE PassengerID = '{passenger.User_ID}' AND CarpoolID = '{passenger.Carpool_ID}'";
+                string queryString = $"DELETE FROM CarpoolPassengers WHERE PassengerID = @CarpoolID AND CarpoolID = @PassengerID";
                 SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add("@CarpoolID", SqlDbType.Int);
+                command.Parameters["@CarpoolID"].Value = passenger.Carpool_ID;
+                command.Parameters.Add("@PassengerID", SqlDbType.Int);
+                command.Parameters["@PassengerID"].Value = passenger.User_ID;
                 connection.Open();
                 command.ExecuteNonQuery();
             }
         }
 
+        /// <summary>
+        /// This method deletes an existing passenger from all carpools in the CarpoolPassengers Database
+        /// </summary>
         public void DeletePassengerAllCarpoolsDataService(int userID)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string queryString = $"DELETE FROM CarpoolPassengers WHERE PassengerID = '{userID}'";
+                string queryString = $"DELETE FROM CarpoolPassengers WHERE PassengerID = @PassengerID";
                 SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add("@PassengerID", SqlDbType.Int);
+                command.Parameters["@PassengerID"].Value = userID;
                 connection.Open();
                 command.ExecuteNonQuery();
             }
