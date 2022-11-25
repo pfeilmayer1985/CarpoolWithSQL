@@ -177,32 +177,6 @@ namespace TecAlliance.Carpool.Business
 
         }
 
-        /*
-        /// <summary>
-        /// This method will add a new user in the Database
-        /// </summary>
-        public CarpoolPassengersModelData AddPassengerBusineeService(int carpoolID, int userID)
-        {
-            user = _userDataServiceSQL.ListUserByIdDataService(userID);
-            carpool = _carpoolsDataServiceSQL.ListCarpoolByIDDataService(carpoolID);
-            passengersList = _userDataServiceSQL.ListPassengerInACarpoolDataService(userID, carpoolID);
-            if (user != null && userID != carpool.DriverID && userID == null)
-            {
-                CarpoolPassengersModelData newPassenger = new CarpoolPassengersModelData()
-                {
-                    Carpool_ID = carpoolID,
-                    User_ID = userID
-                };
-                _userDataServiceSQL.AddPassengerDataService(newPassenger);
-                return newPassenger;
-            }
-            else
-            {
-                return null;
-            }
-        }
-        */
-
         /// <summary>
         /// This method will delete a passenger from a Carpool (ID) based on his UserID
         /// </summary>
