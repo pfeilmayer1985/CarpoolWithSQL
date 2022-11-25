@@ -127,7 +127,7 @@ namespace TecAlliance.Carpool.Data
         /// <summary>
         /// This method deletes/removes an existing carpool from the Carpools Database
         /// </summary>
-        public void DeleteCarpoolByIDDataService(int carpoolID)
+        public void DeleteCarpoolByCarpoolIDDataService(int carpoolID)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -137,14 +137,28 @@ namespace TecAlliance.Carpool.Data
                 command.Parameters["@CarpoolID"].Value = carpoolID;
                 connection.Open();
                 command.ExecuteNonQuery();
+            }
+        }
 
-                
-                
+
+        /// <summary>
+        /// This method deletes/removes an existing carpool from the Carpools Database based on the driver ID
+        /// </summary>
+        public void DeleteCarpoolByDriverIDDataService(int driverID)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string queryString = $"DELETE FROM Carpools WHERE DriverID = @DriverID";
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add("@DriverID", SqlDbType.Int);
+                command.Parameters["@DriverID"].Value = driverID;
+                connection.Open();
+                command.ExecuteNonQuery();
             }
         }
 
         /// <summary>
-        /// This method deletes/removes an existing carpool from the Carpools Database
+        /// This method deletes/removes an existing carpool from the CarpoolPassengers Database
         /// </summary>
         public void RemoveCarpoolByIDFromPassengerTableDataService(int carpoolID)
         {

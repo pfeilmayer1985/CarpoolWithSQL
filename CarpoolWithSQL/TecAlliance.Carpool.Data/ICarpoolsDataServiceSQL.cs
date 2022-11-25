@@ -6,7 +6,8 @@ namespace TecAlliance.Carpool.Data
     {
         void AddCarpoolDataService(CarpoolsModelData carpool);
         int CountPassengersByCarpoolIDDataService(int carpoolID);
-        void DeleteCarpoolByIDDataService(int carpoolID);
+        void DeleteCarpoolByCarpoolIDDataService(int carpoolID);
+        void DeleteCarpoolByDriverIDDataService(int driverID);
         void EditCarpoolDataService(CarpoolsModelData carpool);
         List<CarpoolsModelData> ListAllCarpoolsDataService();
         CarpoolsModelData ListCarpoolByIDDataService(int carpoolID);

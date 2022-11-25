@@ -34,7 +34,7 @@ namespace TecAlliance.Carpool.Api.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [Route("GetUserByID{userID}")]
+        [Route("GetUserByID/{userID}")]
         public async Task<ActionResult<UserBaseModelDto>> GetUserById(int userID)
         {
             UserBaseModelDto item = _userBusinessService.ListUserDataById(userID);
@@ -62,7 +62,7 @@ namespace TecAlliance.Carpool.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [Route("EditUserById{userID}")]
+        [Route("EditUserById/{userID}")]
         public async Task<IActionResult> UpdateUser(int userID, string password, UserBaseModelData user)
         {
             var item = _userBusinessService.EditUserBusinessService(userID, password, user);
@@ -82,8 +82,9 @@ namespace TecAlliance.Carpool.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [Route("DeleteUserByID{userID}")]
+        [Route("DeleteUserByID/{userID}")]
         public async Task<IActionResult> DeleteUser(int userID, string password)
+
         {
             var item = _userBusinessService.ListUserDataById(userID);
             if (item == null)
@@ -101,7 +102,7 @@ namespace TecAlliance.Carpool.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [Route("RemoveUserFromCarpoolID{carpoolID},{userID}")]
+        [Route("RemoveUserFromCarpoolID/{carpoolID}/{userID}")]
         public async Task<IActionResult> RemoveUserFromCarpool(int carpoolID, int userID, string password)
         {
             var user = _userBusinessService.ListUserDataById(userID);

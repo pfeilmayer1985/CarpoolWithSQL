@@ -146,7 +146,7 @@ namespace TecAlliance.Carpool.Business
             {
                 int carpoolToDelete = (int)carpool.CarpoolID;
                 _carpoolsDataServiceSQL.RemoveCarpoolByIDFromPassengerTableDataService(carpoolToDelete);
-                _carpoolsDataServiceSQL.DeleteCarpoolByIDDataService(carpoolToDelete);
+                _carpoolsDataServiceSQL.DeleteCarpoolByCarpoolIDDataService(carpoolToDelete);
                 return carpoolToDelete;
             }
 

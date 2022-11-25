@@ -155,7 +155,7 @@ namespace TecAlliance.Carpool.Data
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string queryString = "SELECT * FROM Users WHERE UserID = @UserID";
+                string queryString = "DELETE FROM Users WHERE UserID = @UserID";
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.Parameters.Add("@UserID", SqlDbType.Int);
                 command.Parameters["@UserID"].Value = userID;
@@ -285,7 +285,6 @@ namespace TecAlliance.Carpool.Data
                 command.ExecuteNonQuery();
             }
         }
-
-
+           
     }
 }

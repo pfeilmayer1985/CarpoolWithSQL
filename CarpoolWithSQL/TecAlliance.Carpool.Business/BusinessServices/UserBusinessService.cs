@@ -113,12 +113,54 @@ namespace TecAlliance.Carpool.Business
         {
             user = _userDataServiceSQL.ListUserByIdDataService(userID);
             passengersList = _userDataServiceSQL.ListAllPassengersDataService();
-            var isUserAlsoPassenger = passengersList.FirstOrDefault(e => e.User_ID.Equals(userID));
+            var isUserAlsoPassenger = passengersList.FirstOrDefault(p => p.User_ID.Equals(userID));
+            carpoolsList = _carpoolsDataServiceSQL.ListAllCarpoolsDataService();
+            var isUserAlsoCarpoolProvider = carpoolsList.FirstOrDefault(d => d.DriverID.Equals(userID));
 
-            if (user != null && user.Password == password && isUserAlsoPassenger != null)
+            if (user != null && user.Password == password && isUserAlsoPassenger != null && isUserAlsoCarpoolProvider != null)
             {
                 int userToDelete = (int)user.ID;
                 _userDataServiceSQL.DeletePassengerAllCarpoolsDataService(userToDelete);
+                foreach (var individualCarpool in carpoolsList)
+                {
+                    if (individualCarpool.DriverID == userID)
+                    {
+                        passengersList = _userDataServiceSQL.ListAllPassengersDataService();
+                        var carpoolPassengers = passengersList.FirstOrDefault(c => c.Carpool_ID.Equals(individualCarpool.CarpoolID));
+                        if (carpoolPassengers != null)
+                        {
+                            _carpoolsDataServiceSQL.RemoveCarpoolByIDFromPassengerTableDataService((int)individualCarpool.CarpoolID);
+                        }
+                        _carpoolsDataServiceSQL.DeleteCarpoolByCarpoolIDDataService((int)individualCarpool.CarpoolID);
+                    }
+                }
+                _userDataServiceSQL.DeleteUserDataService(userToDelete);
+                return userToDelete;
+            }
+
+            else if (user != null && user.Password == password && isUserAlsoPassenger != null)
+            {
+                int userToDelete = (int)user.ID;
+                _userDataServiceSQL.DeletePassengerAllCarpoolsDataService(userToDelete);
+                _userDataServiceSQL.DeleteUserDataService(userToDelete);
+                return userToDelete;
+            }
+            else if (user != null && user.Password == password && isUserAlsoCarpoolProvider != null)
+            {
+                int userToDelete = (int)user.ID;
+                foreach (var individualCarpool in carpoolsList)
+                {
+                    if (individualCarpool.DriverID == userID)
+                    {
+                        passengersList = _userDataServiceSQL.ListAllPassengersDataService();
+                        var carpoolPassengers = passengersList.FirstOrDefault(c => c.Carpool_ID.Equals(individualCarpool.CarpoolID));
+                        if (carpoolPassengers != null)
+                        {
+                            _carpoolsDataServiceSQL.RemoveCarpoolByIDFromPassengerTableDataService((int)individualCarpool.CarpoolID);
+                        }
+                        _carpoolsDataServiceSQL.DeleteCarpoolByCarpoolIDDataService((int)individualCarpool.CarpoolID);
+                    }
+                }
                 _userDataServiceSQL.DeleteUserDataService(userToDelete);
                 return userToDelete;
             }

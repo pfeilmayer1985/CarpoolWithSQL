@@ -28,7 +28,7 @@ namespace TecAlliance.Carpool.Api.Controllers
         }
 
         [HttpGet]
-        [Route("GetCarpoolById{carpoolID}")]
+        [Route("GetCarpoolById/{carpoolID}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<CarpoolsModelDto>> GetCarpoolById(int carpoolID)
@@ -45,7 +45,7 @@ namespace TecAlliance.Carpool.Api.Controllers
         }
 
         [HttpPost]
-        [Route("DriverCreatesCarpool{userID}")]
+        [Route("DriverCreatesCarpool/{userID}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<CarpoolsModelData>> AddCarpool(int userID, CarpoolsModelData carpool)
@@ -55,7 +55,7 @@ namespace TecAlliance.Carpool.Api.Controllers
         }
 
         [HttpPost]
-        [Route("PassengerJoinsExistingCarpool{carpoolID},{userID}")]
+        [Route("PassengerJoinsExistingCarpool/{carpoolID}/{userID}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<CarpoolPassengersModelData>> JoinCarpool(int carpoolID, int userID)
@@ -70,7 +70,7 @@ namespace TecAlliance.Carpool.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [Route("DeleteCarpoolById{carpoolID},{userID},{password}")]
+        [Route("DeleteCarpoolById/{carpoolID}/{userID}/{password}")]
         public async Task<IActionResult> DeleteCarpoolByID(int carpoolID, int userID, string password)
         {
             var item = _carpoolsBusinessService.ListOneCarpoolByIdBusinessService(carpoolID);
@@ -89,7 +89,7 @@ namespace TecAlliance.Carpool.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [Route("EditCarpool{carpoolID},{userID},{password}")]
+        [Route("EditCarpool/{carpoolID}/{userID}/{password}")]
         public async Task<IActionResult> UpdateCarpool(int carpoolID, int userID, string password, CarpoolsModelData eCarpool)
         {
             var item = _carpoolsBusinessService.EditCarpoolBusinessService(carpoolID, userID, password, eCarpool);
